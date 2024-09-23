@@ -1,18 +1,17 @@
+<template>
+  <TopNav />
+  <router-view />
+</template>
+
 <script>
-import ProductLayout from './layouts/ProductLayout.vue'
+import TopNav from './components/TopNav.vue';
 
 export default {
   name: 'App',
   components: {
-    ProductLayout
+    TopNav
   }
 }
 </script>
 
-<template>
-  <ProductLayout class="scroll-smooth" />
-</template>
-
-<style scoped>
-
-</style>
+<style scoped></style>
