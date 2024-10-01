@@ -6,6 +6,7 @@ export default {
     extend: {
       backgroundImage: {
         'addImage': "url('/src/assets/add.svg')",
+        'deleteImage': "url('/src/assets/delete.svg')",
       },
       backgroundSize: {
         'addImage': 'contain',

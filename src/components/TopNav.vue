@@ -1,6 +1,6 @@
 <template>
   <div
-    class="hidden md:flex flex-col items-center w-40 h-screen overflow-hidden text-gray-400 bg-gradient-to-b from-gray-900 to-black ">
+    class="hidden md:flex flex-col items-center w-40 h-auto h-min-screen overflow-hidden text-gray-400 bg-gradient-to-b from-gray-900 to-black ">
     <!-- <ThemeButton /> -->
     <RouterLink class="flex items-center w-full px-3 mt-14" to="/">
       <svg class="w-8 h-8 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
