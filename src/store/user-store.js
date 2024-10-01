@@ -1,43 +1,65 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
-export const useUserStore = defineStore('user', {
-    state: () => ({
-        user: null,
-        token: null
-    }),
-    getters: {
-        get_user: (state) => state.user,
-        get_token: (state) => state.token
+export const useUserStore = defineStore("user", {
+  state: () => ({
+    account: null,
+    token: "",
+    error: null,
+  }),
+
+  getters: {
+    get_account: (state) => state.account,
+    get_token: (state) => state.token,
+  },
+  actions: {
+    setAccount(account) {
+      console.log('account: ', account);
+      this.$patch({ account });
+      localStorage.setItem("userId", account._id);
     },
-    actions: {
-        async findUser(id) {
-            try {
-                const response = await axios.post(`${process.env.VUE_APP_API_URL}/checkUser`, {
-                    _id: id
-                });
-                this.user = response.data.user;
-                this.token = response.data.token;
-                localStorage.setItem('user', JSON.stringify(response.data.user))
-                localStorage.setItem('token', response.data.token)
-            }
-             catch (error) {
-                console.error(error);
-                localStorage.clear()
-            }
-        },
-        update_user(new_user) {
-            this.user = new_user
-        },
-        remove_user() {
-            this.user = null
-            localStorage.clear()
-        },
-        update_token(new_token) {
-            this.token = new_token
-        },
-        remove_token() {
-            this.token = null
-        }
-    }
-})
+    setToken(token) {
+      console.log(token);
+      this.token = token;
+      localStorage.setItem("userToken", token);
+    },
+    async createAccount(userData) {
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/account/create",
+          userData
+        );
+        this.setAccount(response.data.user);
+        this.setToken(response.data.token);
+      } catch (error) {
+        console.error(error);
+        this.error =
+          error.response?.data?.message || "Error al crear la cuenta"; // Manejo del error
+      }
+    },
+    async signIn(userData) {
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/account/login",
+          userData
+        );
+        this.setAccount(response.data.user);
+        this.setToken(response.data.token);
+      } catch (error) {
+        console.error(error);
+        this.error =
+          error.response?.data?.message || "Error al iniciar sesión"; // Manejo del error
+      }
+    },
+    async logout() {
+      try {
+        await axios.post("http://localhost:3000/account/logout");
+        this.setAccount(null);
+        this.setToken(null);
+        localStorage.removeItem("userToken");
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
+});

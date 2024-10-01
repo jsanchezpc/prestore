@@ -1,13 +1,15 @@
 <template>
-    <CreateProduct />
+    <TopNav />
+    <router-view></router-view>
 </template>
 
 <script>
-import CreateProduct from '../views/CreateProduct.vue';
+import TopNav from './../components/TopNav.vue';
+
 export default {
     name: 'HomeLayout',
     components: {
-        CreateProduct
+        TopNav
     }
-}   
+}
 </script>
