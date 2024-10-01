@@ -14,12 +14,10 @@ export const useUserStore = defineStore("user", {
   },
   actions: {
     setAccount(account) {
-      console.log('account: ', account);
       this.$patch({ account });
       localStorage.setItem("userId", account._id);
     },
     setToken(token) {
-      console.log(token);
       this.token = token;
       localStorage.setItem("userToken", token);
     },

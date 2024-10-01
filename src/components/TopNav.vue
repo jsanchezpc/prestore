@@ -115,7 +115,6 @@ export default {
   async created() {  
     const userStore = useUserStore();
     this.username = await userStore.get_account.username; 
-    console.log('username: ', this.username);
   }
 }
 </script>

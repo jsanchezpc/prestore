@@ -70,8 +70,6 @@ router.beforeEach(async (to, from, next) => {
     const userId = localStorage.getItem("userId");
 
     if (!token || !userId) {
-      console.log(token);
-      console.log(userId);
       next({ path: "/account/login" });
     } else {
       try {
@@ -85,7 +83,6 @@ router.beforeEach(async (to, from, next) => {
         });
 
         if (response.status === 200) {
-          console.log('asdasd',response.data);
           useUserStore().setAccount(response.data.user.user);
           next();
         }

@@ -13,6 +13,9 @@ export default {
       backgroundRepeat: {
         'addImage': 'no-repeat',
       },
+      backgroundPosition: {
+        'addImage': 'center',
+      },
     },
   },  
   plugins: [

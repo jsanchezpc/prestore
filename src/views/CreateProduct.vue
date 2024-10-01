@@ -7,40 +7,39 @@
             </div>
             <div class="landing-form mt-14">
                 <label for="id-name">Title</label>
-                <input
+                <input v-model="title"
                     class="mt-0 mb-10 block w-full md:w-96 px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black"
                     type="text" id="id-name" placeholder="Name your landing page">
+
                 <label for="goal">Goal (1 or greater)</label>
-                <input
+                <input v-model="goal"
                     class="mt-0 mb-10 block w-full md:w-96 px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black"
-                    type="number" id="goal" placeholder="Likes needed to reach goal " min="1">
+                    type="number" id="goal" placeholder="Likes needed to reach goal" min="1">
 
                 <label for="id-tag">Tag</label>
-                <input
+                <input v-model="tag"
                     class="mt-0 mb-10 block w-full md:w-96 px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black"
                     type="text" id="id-tag" placeholder="Choose a Tag">
-                <!-- <select class="mt-0 mb-10 block w-full md:w-96 px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" id="id-category">
-                    <option>Category</option>
-                    <option>Category</option>
-                    <option>Category</option>
-                </select> -->
 
                 <label for="id-description">Description</label>
-                <textarea
-                    class="mt-1 mb-10 block w-full md:w-96 lg:w-1/2 rounded-md border-gray-300 shadow-sm focus:border-gray-300/90 focus:ring focus:ring-gray-200/10 focus:ring-opacity-50"
+                <textarea v-model="description"
+                    class="mt-1 mb-5 block w-full md:w-96 lg:w-1/2 rounded-md border-gray-300 shadow-sm focus:border-gray-300/90 focus:ring focus:ring-gray-200/10 focus:ring-opacity-50"
                     id="id-description" placeholder="Describe your idea/product/project..."></textarea>
-
-                <label for="id-image">Add media</label>
-                <div class="mt-1 mb-10 flex items-left justify-left">
-                    <div class="w-16 h-16 cursor-pointer  bg-addImage bg-contain bg-no-repeat"></div>
-                    <div class="w-16 h-16 cursor-pointer  bg-addImage bg-contain bg-no-repeat"></div>
-                    <div class="w-16 h-16 cursor-pointer  bg-addImage bg-contain bg-no-repeat"></div>
-                    <div class="w-16 h-16 cursor-pointer  bg-addImage bg-contain bg-no-repeat"></div>
+                <span>Add media</span>
+                <div class="flex content-center mt-2">
+                    <UploadWidget @imagesUploaded="handleImages" />
+                    <div class="justify-center content-center" v-if="images.length">
+                        <ul class="flex gap-2 mb-4 content-center justify-center">
+                            <div v-for="image in images" :key="image"
+                                class="w-16 h-16  cursor-pointer bg-center bg-contain bg-no-repeat rounded-lg "
+                                :style="{ backgroundImage: `url(${image})` }">
+                            </div>
+                        </ul>
+                    </div>
                 </div>
 
-                <!-- <label for="id-price">Price</label>
-                <input class="mt-0 mb-10 block w-full md:w-96 px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" id="id-price" placeholder="Price"> -->
-                <div class="create-btn cursor-pointer bg-blue-400 p-3 w-full md:w-96 rounded-full">
+                <div class="create-btn cursor-pointer bg-blue-500 p-3 w-full md:w-96 rounded-full"
+                    @click="createLandingPage">
                     <h1 class="text-white text-xl text-center font-bold">Create</h1>
                 </div>
             </div>
@@ -49,17 +48,37 @@
 </template>
 
 <script>
+import UploadWidget from '../components/UploadWidget.vue';
 import AddSvg from '../assets/add.svg'
+
 export default {
     name: 'CreateProduct',
+    components: {
+        UploadWidget,
+    },
     data() {
         return {
             addIcon: AddSvg,
-            title:'',
+            title: '',
             goal: 1,
             tag: '',
             description: '',
-            images: '',
+            images: [],
+        }
+    },
+    methods: {
+        handleImages(uploadedImages) {
+            this.images = uploadedImages;
+        },
+        createLandingPage() {
+            // Aquí agregar la lógica para crear la landing page
+            console.log({
+                title: this.title,
+                goal: this.goal,
+                tag: this.tag,
+                description: this.description,
+                images: this.images
+            });
         }
     }
 }
