@@ -32,10 +32,10 @@
 
                 <label for="id-image">Add media</label>
                 <div class="mt-1 mb-10 flex items-left justify-left">
-                    <div class="w-16 h-16 cursor-pointer bg-[url('/src/assets/add.svg')]"></div>
-                    <div class="w-16 h-16 cursor-pointer bg-[url('/src/assets/add.svg')]"></div>
-                    <div class="w-16 h-16 cursor-pointer bg-[url('/src/assets/add.svg')]"></div>
-                    <div class="w-16 h-16 cursor-pointer bg-[url('/src/assets/add.svg')]"></div>
+                    <div class="w-16 h-16 cursor-pointer  bg-addImage bg-contain bg-no-repeat"></div>
+                    <div class="w-16 h-16 cursor-pointer  bg-addImage bg-contain bg-no-repeat"></div>
+                    <div class="w-16 h-16 cursor-pointer  bg-addImage bg-contain bg-no-repeat"></div>
+                    <div class="w-16 h-16 cursor-pointer  bg-addImage bg-contain bg-no-repeat"></div>
                 </div>
 
                 <!-- <label for="id-price">Price</label>

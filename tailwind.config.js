@@ -6,9 +6,15 @@ export default {
     extend: {
       backgroundImage: {
         'addImage': "url('/src/assets/add.svg')",
-      }
+      },
+      backgroundSize: {
+        'addImage': 'contain',
+      },
+      backgroundRepeat: {
+        'addImage': 'no-repeat',
+      },
     },
-  },
+  },  
   plugins: [
     require('@tailwindcss/forms'),
     // ...
