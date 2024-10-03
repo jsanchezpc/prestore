@@ -1,13 +1,9 @@
 <template>
-    <ProductPreview />
+    <router-view />
 </template>
 
 <script >
-import ProductPreview from '../views/ProductPreview.vue';
 export default {
     name: 'ProductLayout',
-    components: {
-        ProductPreview
-    }
 }
 </script>

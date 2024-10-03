@@ -7,6 +7,8 @@ export default {
       backgroundImage: {
         'addImage': "url('/src/assets/add.svg')",
         'deleteImage': "url('/src/assets/delete.svg')",
+        'externalLink': "url('/src/assets/external-link.svg')",
+        'return': "url('/src/assets/return.svg')",
       },
       backgroundSize: {
         'addImage': 'contain',

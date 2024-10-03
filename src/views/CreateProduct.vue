@@ -5,7 +5,12 @@
                 <h1 class="text-md font-light text-slate-100/80">Dashboard /</h1>
                 <h1 class="text-xl md:text-4xl font-medium text-slate-100">Create a new landing page</h1>
             </div>
-            <div class="landing-form mt-14 flex flex-wrap gap-4">
+            <div v-if="formProcess === 1" class="w-full mt-4 mx-auto">
+                <LottieAnimation class="w-96 h-96 mx-auto" :animation-data="loadingLottie" :auto-play="true"
+                    :loop="true" :speed="1" />
+                <h1 class="text-4xl text-center text-gray-500/50">Your landing page is being created...</h1>
+            </div>
+            <div v-if="formProcess === 0" class="landing-form mt-14 flex flex-wrap gap-4">
                 <div class="grow">
                     <label for="id-name">Title</label>
                     <input v-model="title"
@@ -16,10 +21,8 @@
                         class="mt-1 mb-5 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-300/90 focus:ring focus:ring-gray-200/10 focus:ring-opacity-50"
                         id="id-description" placeholder="Describe your idea/product/project..."></textarea>
                     <span>Add media (5 max.)</span>
-                    <!-- <h1 class="text-4xl">AÑADE EL BOTONCITO DE ELIMINAR LAS FOTOS (CUANDO SE SUBAN Y SE VEAN AQUI) Y HAZ TAMBIEN QUE SE ELIMINEN DE CLOUDINARY</h1> -->
                     <div class="flex content-center mt-2">
                         <UploadWidget v-if="images.length < 5" @imagesUploaded="handleImages" />
-                        <!-- <h1 class="text-4xl">AÑADE EL BOTONCITO DE ELIMINAR LAS FOTOS (CUANDO SE SUBAN Y SE VEAN AQUI) Y HAZ TAMBIEN QUE SE ELIMINEN DE CLOUDINARY</h1> -->
                         <div class="justify-center content-center" v-if="images.length">
                             <ul class="flex flex-wrap gap-2 mb-4 content-center justify-left ">
                                 <div v-for="image in images" :key="image"
@@ -51,8 +54,22 @@
 
                 </div>
             </div>
-            <div class="create-btn cursor-pointer my-5 bg-blue-500 p-3 w-full " @click="createLandingPage">
-                <h1 class="text-white text-xl text-center font-bold">Create</h1>
+            <div v-if="formProcess === 0" class="create-btn cursor-pointer my-5 bg-blue-500 p-3 w-full "
+                @click="createLandingPage">
+                <h1 class="text-white text-xl text-center font-bold">Create landing</h1>
+            </div>
+            <div v-if="formProcess === 2" class="create-btn cursor-pointer my-5  w-full " @click="landIt">
+                <h1 class="text-black/10 mb-10 text-4xl text-center font-bold">Your landing page is ready!</h1>
+                <div class="flex">
+                    <h1 @click="returnToDashboard()"
+                        class="text-white text-left w-fit content-center mx-auto text-xl rounded  font-bold bg-blue-500 p-3">Return
+                        to Dashboard</h1>
+                    <h1 @click="goToLandingPage(username, weburl)"
+                        class="text-white w-full ml-5 content-center text-xl text-center rounded-full font-bold bg-blue-500 p-3">Land
+                        it 🚀</h1>
+
+                </div>
+
             </div>
         </div>
     </main>
@@ -62,7 +79,9 @@
 import axios from 'axios';
 import UploadWidget from '../components/UploadWidget.vue';
 import { useUserStore } from '../store/user-store';
-
+import { LottieAnimation } from "lottie-web-vue"
+// assets: 
+import loadingLottie from './../assets/lotties/paper-fly.json';
 import AddSvg from '../assets/add.svg';
 import deleteSvg from '../assets/delete.svg';
 
@@ -70,6 +89,7 @@ export default {
     name: 'CreateProduct',
     components: {
         UploadWidget,
+        LottieAnimation
     },
     data() {
         return {
@@ -82,9 +102,16 @@ export default {
             description: '',
             images: [],
             userId: '',
+            username: '',
+            weburl: '',
+            formProcess: 0,
+            loadingLottie: loadingLottie,
         };
     },
     methods: {
+        returnToDashboard() {
+            this.$router.push('/');
+        },
         handleImages(uploadedImages) {
             if (uploadedImages.length > 5) {
                 alert('You can upload a maximum of 5 images.');
@@ -113,9 +140,12 @@ export default {
         },
         async createLandingPage() {
             try {
+                this.formProcess = 1;
                 const userStore = useUserStore();
                 const token = localStorage.getItem('userToken');
                 this.userId = userStore.get_account._id;
+                this.username = userStore.get_account.username;
+                console.log(this.username);
                 const response = await axios.post('http://localhost:3000/landing/create', {
                     title: this.title,
                     url: this.url,
@@ -123,7 +153,8 @@ export default {
                     tag: this.tag,
                     description: this.description,
                     images: this.images,
-                    userId: this.userId
+                    userId: this.userId,
+                    username: this.username,
                 },
                     {
                         headers: { Authorization: `Bearer ${token}` }
@@ -131,14 +162,19 @@ export default {
                 );
 
                 if (response.status === 201 || response.status === 200) {
-                    alert('Landing page created successfully!');
                     this.clearForm();
+                    this.weburl = response.data.url;
+                    this.formProcess = 2;
                 }
             } catch (error) {
                 console.error('Error creating landing page:', error);
                 alert('There was an issue creating the landing page.');
                 this.clearForm();
+                this.formProcess = 0;
             }
+        },
+        goToLandingPage(username, weburl) {
+            this.$router.push(`/${username}/${weburl}`);
         },
         clearForm() {
             this.title = '';
@@ -166,6 +202,7 @@ export default {
             }
         },
         handleBeforeUnload(event) {
+            // this.formProcess = 0;
             this.cleanupImages();
             const confirmationMessage = 'You have unsaved changes. Are you sure you want to leave?';
             event.returnValue = confirmationMessage;

@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useUserStore } from "../store/user-store";
 import axios from "axios";
 
 import HomeLayout from "./../layouts/HomeLayout.vue";
@@ -10,7 +11,8 @@ import LoginLayout from "../layouts/LoginLayout.vue";
 import DashboardView from "../views/DashboardView.vue";
 import LoginView from "../views/LoginView.vue";
 import SignupView from "../views/SignupView.vue";
-import { useUserStore } from "../store/user-store";
+import ProductPreview from "../views/ProductPreview.vue";
+import ProductAdmin from "../views/ProductAdmin.vue";
 
 const routes = [
   {
@@ -53,7 +55,22 @@ const routes = [
       },
     ],
   },
-  { path: "/:webname", component: ProductLayout, props: true },
+  {
+    path: "/:username",
+    component: ProductLayout,
+    children: [
+      {
+        path: ":url",
+        component: ProductPreview,
+        meta: { requiresAuth: false },
+      },
+      {
+        path: ":url/admin",
+        component: ProductAdmin,
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
 ];
 
 

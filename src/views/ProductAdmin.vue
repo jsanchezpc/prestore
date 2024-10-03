@@ -1,6 +1,18 @@
 <template>
     <main class="h-screen min-h-screen text-black lg:flex md:p-4 lg:bg-gradient-to-b from-white from-90% to-black/30">
         <div class="flex-1 md:content-center justify-items-center ">
+            <div class="hidden lg:block md:absolute top-4">
+                <div class="return-btn bg-return bg-center bg-contain bg-no-repeat p-3 cursor-pointer"></div>
+                <RouterLink to="/" class="text-gray-500 text-sm font-medium">
+                    <span class="underline">Back to Dashboard</span>
+                </RouterLink>
+            </div>
+            <div class="w-full p-0 m-0 md:p-2 md:rounded-sm flex lg:hidden md:bg-white bg-black"> 
+                <div class="return-btn bg-return bg-center bg-contain bg-no-repeat p-3 cursor-pointer"></div>
+                <RouterLink to="/" class="text-gray-500 text-sm font-medium w-fit content-center ml-1">
+                    <span class="underline text-center w-fit">Back to Dashboard</span>
+                </RouterLink>
+            </div>
             <img class="block m-auto md:rounded-2xl  md:shadow-sm md:shadow-black" :src="image" alt="">
             <!-- <div class="all-images mt-0 flex w-full justify-center ">
                 <img class="flex flex-col cursor-pointer aspect-video w-40"
@@ -49,6 +61,7 @@ import RateStar from './../components/RateStar.vue'
 import HeartSvg from './../assets/heart.svg'
 import ShopSvg from './../assets/shop.svg'
 import sadSvg from './../assets/sad.svg'
+import { RouterLink } from 'vue-router'
 
 export default {
     name: 'ProductLayout',
@@ -75,11 +88,11 @@ export default {
         try {
             const username = this.$route.params.username;
             const url = this.$route.params.url;
-            // const token = localStorage.getItem('userToken');
-            const response = await axios.get(`http://localhost:3000/landing/get?username=${username}&url=${url}`,
-                // {
-                //     headers: { Authorization: `Bearer ${token}` }
-                // }
+            const token = localStorage.getItem('userToken');
+            const response = await axios.get(`http://localhost:3000/landing/admin/get?username=${username}&url=${url}`,
+                {
+                    headers: { Authorization: `Bearer ${token}` }
+                }
             );
             if (response.status === 200) {
                 this.title = response.data.title;
