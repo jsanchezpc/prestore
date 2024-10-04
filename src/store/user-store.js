@@ -32,7 +32,7 @@ export const useUserStore = defineStore("user", {
       } catch (error) {
         console.error(error);
         this.error =
-          error.response?.data?.message || "Error al crear la cuenta"; // Manejo del error
+          error.response?.data?.message || "Error al crear la cuenta"; 
       }
     },
     async signIn(userData) {
@@ -46,7 +46,7 @@ export const useUserStore = defineStore("user", {
       } catch (error) {
         console.error(error);
         this.error =
-          error.response?.data?.message || "Error al iniciar sesión"; // Manejo del error
+          error.response?.data?.message || "Error al iniciar sesión"; 
       }
     },
     async logout() {

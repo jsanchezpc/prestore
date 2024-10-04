@@ -2,7 +2,10 @@
     <main class="h-auto min-h-screen w-screen text-black lg:bg-gradient-to-b from-white from-90% to-black/30">
         <div class="new-mvp mt-20 ml-10 mr-10 md:mx-20 p-0 md:p-4">
             <div class="bg-gradient-to-l from-gray-900 to-black p-4 rounded-md shadow-lg">
-                <h1 class="text-md font-light text-slate-100/80">Dashboard /</h1>
+                <RouterLink to="/" >
+                    <h1 class="text-md font-light text-slate-100/80">Dashboard /</h1>
+                </RouterLink>
+
                 <h1 class="text-xl md:text-4xl font-medium text-slate-100">Create a new landing page</h1>
             </div>
             <div v-if="formProcess === 1" class="w-full mt-4 mx-auto">
@@ -60,12 +63,15 @@
             </div>
             <div v-if="formProcess === 2" class="create-btn cursor-pointer my-5  w-full " @click="landIt">
                 <h1 class="text-black/10 mb-10 text-4xl text-center font-bold">Your landing page is ready!</h1>
-                <div class="flex">
+                <div class="flex p-3 mr-3">
+                    <div class="return-btn bg-return bg-center bg-contain bg-no-repeat p-3 cursor-pointer mr-2"></div>
                     <h1 @click="returnToDashboard()"
-                        class="text-white text-left w-fit content-center mx-auto text-xl rounded  font-bold bg-blue-500 p-3">Return
+                        class="text-gray-500 text-left w-fit content-center mx-auto text-xl rounded  font-bold  p-3">
+                        Return
                         to Dashboard</h1>
                     <h1 @click="goToLandingPage(username, weburl)"
-                        class="text-white w-full ml-5 content-center text-xl text-center rounded-full font-bold bg-blue-500 p-3">Land
+                        class="text-white w-full ml-5 content-center text-xl text-center rounded-sm font-bold bg-blue-500 p-1">
+                        Land
                         it 🚀</h1>
 
                 </div>
@@ -82,8 +88,7 @@ import { useUserStore } from '../store/user-store';
 import { LottieAnimation } from "lottie-web-vue"
 // assets: 
 import loadingLottie from './../assets/lotties/paper-fly.json';
-import AddSvg from '../assets/add.svg';
-import deleteSvg from '../assets/delete.svg';
+import { RouterLink } from 'vue-router';
 
 export default {
     name: 'CreateProduct',
@@ -93,8 +98,6 @@ export default {
     },
     data() {
         return {
-            addIcon: AddSvg,
-            deleteIcon: deleteSvg,
             title: '',
             url: '',
             goal: 1,
@@ -173,8 +176,9 @@ export default {
                 this.formProcess = 0;
             }
         },
-        goToLandingPage(username, weburl) {
-            this.$router.push(`/${username}/${weburl}`);
+        goToLandingPage(username, url) {
+            const landingPageUrl = `/${username}/${url}`;
+            window.open(landingPageUrl, '_blank');
         },
         clearForm() {
             this.title = '';

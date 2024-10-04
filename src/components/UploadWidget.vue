@@ -46,7 +46,7 @@ export default {
     
         window.addEventListener('imageUploaded', (event) => {
             this.uploadedImages.push(event.detail);
-            this.$emit('imagesUploaded', this.uploadedImages); // Emitir el evento hacia el padre
+            this.$emit('imagesUploaded', this.uploadedImages);
         });
     }
 };

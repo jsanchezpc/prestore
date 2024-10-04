@@ -9,6 +9,9 @@ export default {
         'deleteImage': "url('/src/assets/delete.svg')",
         'externalLink': "url('/src/assets/external-link.svg')",
         'return': "url('/src/assets/return.svg')",
+        'trash': "url('/src/assets/trash.svg')",
+        'edit': "url('/src/assets/edit.svg')",
+        'clipboard': "url('/src/assets/clipboard.svg')",
       },
       backgroundSize: {
         'addImage': 'contain',
@@ -23,7 +26,6 @@ export default {
   },  
   plugins: [
     require('@tailwindcss/forms'),
-    // ...
   ],
 }
 
