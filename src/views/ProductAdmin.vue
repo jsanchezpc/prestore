@@ -9,7 +9,7 @@
             </div>
             <div class="w-full p-0 m-0 md:p-2 md:rounded-sm flex lg:hidden md:bg-white bg-black"> 
                 <div class="return-btn bg-return bg-center bg-contain bg-no-repeat p-3 cursor-pointer"></div>
-                <RouterLink to="/" class="text-gray-500 text-sm font-medium w-fit content-center ml-1">
+                <RouterLink to="/" class="text-white md:text-gray-500 text-sm font-medium w-fit content-center ml-1">
                     <span class="underline text-center w-fit">Back to Dashboard</span>
                 </RouterLink>
             </div>
@@ -40,6 +40,7 @@
                     class="item-description text-justify text-sm sm:px-10 text-gray-500 mb-auto text-ellipsis ">
                     {{ description }}
                 </p>
+                <span class="sm:ml-10 mt-3 p-0 px-4 bg-red-500 rounded-full text-white text-xs block w-fit h-5 content-center justify-center">{{ tag }}</span>
             </div>
             <div
                 class="interact fixed bottom-0  right-0 w-full p-4 mx-auto bg-gradient-to-t from-white from-30% to-transparent lg:bg-transparent lg:static lg:bottom-auto lg:right-auto lg:w-1/2 lg:p-0 justify-center">
