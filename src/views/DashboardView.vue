@@ -56,8 +56,8 @@
                                 <td class="flex gap-2 border-t-0 px-4 align-middle text-xs whitespace-nowrap p-2">
                                     <div @click="editLanding(landing._id)"
                                         class="bg-edit bg-center bg-contain bg-no-repeat p-3 cursor-pointer"></div>
-                                    <EditLandingPopup v-if="editPopup === true" :landing="landing" @confirmChanges="updateLanding(newLandingData)"
-                                        @close="closePopup(1)" />
+                                    <EditLandingPopup v-if="editPopup === true" :landing="landing"
+                                        @confirmChanges="updateLanding" @close="closePopup(1)" />
                                     <div @click="trash()"
                                         class="bg-trash bg-center bg-contain bg-no-repeat p-3 cursor-pointer"></div>
                                     <DeletePopup :title="landing.title" v-if="trashPopup === true"
@@ -118,6 +118,26 @@ export default {
                 })
                 .catch(error => {
                     console.error('Error getting user landings:', error);
+                });
+        },
+        updateLanding(params) {
+            const userStore = useUserStore();
+            const token = localStorage.getItem('userToken');
+            const userId = userStore.get_account._id;
+            const { landing_id, newLandingData } = params;
+
+            axios.put(`http://localhost:3000/landing/edit/${landing_id}`, {
+                userId,
+                newLandingData                
+            }, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+                .then(response => {
+                    this.closePopup(0);
+                    this.getUserLandings();
+                })
+                .catch(error => {
+                    console.error('Error updating landing page:', error);
                 });
         },
         goToLandingPage(username, url) {

@@ -137,12 +137,15 @@ export default {
         },
         editLanding() {
             this.$emit('confirmChanges', {
-                title: this.title,
-                url: this.url,
-                goal: this.goal,
-                tag: this.tag,
-                description: this.description,
-                images: this.images
+                landing_id: this.landing._id,
+                newLandingData: {
+                    title: this.title,
+                    url: this.url,
+                    goal: this.goal,
+                    tag: this.tag,
+                    description: this.description,
+                    images: this.images
+                }
             });
         },
         handleImages(uploadedImages) {
@@ -171,43 +174,8 @@ export default {
                 alert('Hubo un error al intentar eliminar la imagen.');
             }
         },
-        async cleanupImages() {
-            if (this.images.length > 0) {
-                const token = localStorage.getItem('userToken');
-                const publicIds = this.images.map(image => image.split('/').pop().split('.')[0]);
 
-                try {
-                    await axios.post('http://localhost:3000/cloudinary/delete-multiple',
-                        { publicIds },
-                        {
-                            headers: { Authorization: `Bearer ${token}` }
-                        }
-                    );
-                    console.log('All uploaded images were removed successfully.');
-                } catch (error) {
-                    console.error('Error cleaning up images:', error);
-                }
-            }
-        },
-        handleBeforeUnload(event) {
-            // this.formProcess = 0;
-            this.cleanupImages();
-            const confirmationMessage = 'You have unsaved changes. Are you sure you want to leave?';
-            event.returnValue = confirmationMessage;
-            return confirmationMessage;
-        },
 
     },
-    beforeDestroy() {
-        window.removeEventListener('beforeunload', this.handleBeforeUnload);
-    },
-    beforeRouteLeave(to, from, next) {
-        if (!this.images.length) {
-            return next();
-        } else {
-            this.cleanupImages();
-        }
-        next();
-    }
 }
 </script>
