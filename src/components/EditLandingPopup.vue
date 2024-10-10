@@ -149,11 +149,12 @@ export default {
             });
         },
         handleImages(uploadedImages) {
-            if (uploadedImages.length > 5) {
+            const totalImages = this.images.concat(uploadedImages); // Combina las imágenes existentes con las nuevas
+            if (totalImages.length > 5) {
                 alert('You can upload a maximum of 5 images.');
-                this.images = uploadedImages.slice(0, 5);
+                this.images = totalImages.slice(0, 5); // Limita a 5 imágenes
             } else {
-                this.images = uploadedImages;
+                this.images = totalImages;
             }
         },
         async removeImage(imageUrl) {
