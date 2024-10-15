@@ -2,7 +2,7 @@
     <main class="h-auto min-h-screen w-screen text-black lg:bg-gradient-to-b from-white from-90% to-black/30">
         <div class="new-mvp mt-20 ml-10 mr-10 md:mx-20 p-0 md:p-4">
             <div class="bg-gradient-to-l from-gray-900 to-black p-4 rounded-md shadow-lg">
-                <RouterLink to="/" >
+                <RouterLink to="/">
                     <h1 class="text-md font-light text-slate-100/80">Dashboard /</h1>
                 </RouterLink>
 
@@ -23,9 +23,10 @@
                     <textarea v-model="description"
                         class="mt-1 mb-5 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-300/90 focus:ring focus:ring-gray-200/10 focus:ring-opacity-50"
                         id="id-description" placeholder="Describe your idea/product/project..."></textarea>
-                    <span>Add media (5 max.)</span>
+                    <span>Add media <span>{{ plan === 0 ? '(3 max.)' : plan === 1 ? '(5 max.)' : '(3 max.)'
+                            }}</span></span>
                     <div class="flex content-center mt-2">
-                        <UploadWidget v-if="images.length < 5" @imagesUploaded="handleImages" />
+                        <UploadWidget v-if="enableUpload" @imagesUploaded="handleImages" />
                         <div class="justify-center content-center" v-if="images.length">
                             <ul class="flex flex-wrap gap-2 mb-4 content-center justify-left ">
                                 <div v-for="image in images" :key="image"
@@ -88,7 +89,6 @@ import { useUserStore } from '../store/user-store';
 import { LottieAnimation } from "lottie-web-vue"
 // assets: 
 import loadingLottie from './../assets/lotties/paper-fly.json';
-import { RouterLink } from 'vue-router';
 
 export default {
     name: 'CreateProduct',
@@ -109,6 +109,8 @@ export default {
             weburl: '',
             formProcess: 0,
             loadingLottie: loadingLottie,
+            plan: 0,
+            enableUpload: true
         };
     },
     methods: {
@@ -116,11 +118,50 @@ export default {
             this.$router.push('/');
         },
         handleImages(uploadedImages) {
-            if (uploadedImages.length > 5) {
-                alert('You can upload a maximum of 5 images.');
-                this.images = uploadedImages.slice(0, 5);
-            } else {
-                this.images = uploadedImages;
+            switch (this.plan) {
+                case 0:
+                    if (uploadedImages.length > 3) {
+                        alert('You can upload a maximum of 3 images.');
+                        this.images = uploadedImages.slice(0, 3);
+                    } else {
+                        this.images = uploadedImages;
+                    }
+                    this.recountImages();
+                    break;
+                case 1:
+                    if (uploadedImages.length > 5) {
+                        alert('You can upload a maximum of 5 images.');
+                        this.images = uploadedImages.slice(0, 5);
+                    } else {
+                        this.images = uploadedImages;
+                    }
+                    this.recountImages();
+                    break;
+                default:
+                    alert('Something went wrong. Please try again.');
+                    break;
+            }
+
+        },
+        recountImages() {
+            switch (this.plan) {
+                case 0:
+                    if (this.images.length === 3) {
+                        this.enableUpload = false;
+                    } else {
+                        this.enableUpload = true;
+                    }
+                    break;
+                case 1:
+                    if (this.images.length === 5) {
+                        this.enableUpload = false;
+                    } else {
+                        this.enableUpload = true;
+                    }
+                    break;
+                default:
+                    alert('Something went wrong. Please try again.');
+                    break;
             }
         },
         async removeImage(imageUrl) {
@@ -136,6 +177,7 @@ export default {
                 );
 
                 this.images = this.images.filter(image => image !== imageUrl);
+                this.recountImages();
             } catch (error) {
                 console.error('Error eliminando imagen:', error);
                 alert('Hubo un error al intentar eliminar la imagen.');
@@ -215,7 +257,9 @@ export default {
 
     },
     mounted() {
+        const userStore = useUserStore();
         window.addEventListener('beforeunload', this.handleBeforeUnload);
+        this.plan = userStore.get_account.plan;
     },
     beforeDestroy() {
         window.removeEventListener('beforeunload', this.handleBeforeUnload);

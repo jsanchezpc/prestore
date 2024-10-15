@@ -1,21 +1,7 @@
 <template>
     <main class="h-screen min-h-screen text-black lg:flex md:p-4 lg:bg-gradient-to-b from-white from-90% to-black/30">
         <div class="flex-1 md:content-center justify-items-center ">
-            <img class="block m-auto md:rounded-2xl  md:shadow-sm md:shadow-black" :src="image" alt="">
-            <!-- <div class="all-images mt-0 flex w-full justify-center ">
-                <img class="flex flex-col cursor-pointer aspect-video w-40"
-                    src="https://ucarecdn.com/ef38dab6-f814-4ec4-b25b-89a58e16f9e6/-/scale_crop/828x728/smart/828w"
-                    alt="">
-                <img class="flex flex-col cursor-pointer aspect-video w-40"
-                    src="https://images.unsplash.com/photo-1719937206109-7f4e933230c8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    alt="">
-                <img class="flex flex-col cursor-pointer aspect-video w-40"
-                    src="https://plus.unsplash.com/premium_photo-1678937609110-61b091b7e1ee?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    alt="">
-                <img class="flex flex-col cursor-pointer aspect-video w-40"
-                    src="https://images.unsplash.com/photo-1725714354941-02986971c66b?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    alt="">
-            </div> -->
+            <ImageCarousel :firstImage="images[0]" :images="images"  />
         </div>
         <div class="flex-1 content-center justify-center p-4 ">
             <div class="product-info mb-20">
@@ -32,7 +18,7 @@
             <div
                 class="interact fixed bottom-0  right-0 w-full p-4 mx-auto bg-gradient-to-t from-white from-30% to-transparent lg:bg-transparent lg:static lg:bottom-auto lg:right-auto lg:w-1/2 lg:p-0 justify-center">
                 <h1 class="lg:block hidden font-bold text-xl text-center text-gray-500/60 mb-4">Did you like it?</h1>
-                <RateStar />
+                <RateStar :landingId="landingId" :initialRating="stars" />
             </div>
             <!-- <div class="more-items sm:flex sm:flex-wrap">
                 <MoreProducts class="flex-1 justify-center " title="More by travelbags" products="products" />
@@ -45,6 +31,7 @@
 <script>
 import axios from 'axios'
 import MoreProducts from './../components/MoreProducts.vue'
+import ImageCarousel from './../components/ImageCarousel.vue'
 import RateStar from './../components/RateStar.vue'
 import HeartSvg from './../assets/heart.svg'
 import ShopSvg from './../assets/shop.svg'
@@ -54,7 +41,8 @@ export default {
     name: 'ProductLayout',
     components: {
         MoreProducts,
-        RateStar
+        RateStar,
+        ImageCarousel
     },
     data() {
         return {
@@ -62,13 +50,17 @@ export default {
             heartIcon: HeartSvg,
             shopIcon: ShopSvg,
             sadIcon: sadSvg,
+            landingId: '',
             username: '',
             url: '',
             image: '',
             title: '',
             description: '',
             goal: '',
-            tag: ''
+            tag: '',
+            images: '',
+            stars: 0,
+            frontImage: ''
         }
     },
     async created() {
@@ -82,11 +74,13 @@ export default {
                 // }
             );
             if (response.status === 200) {
+                this.landingId = response.data._id;
                 this.title = response.data.title;
                 this.description = response.data.description;
                 this.goal = response.data.goal;
+                this.stars = response.data.stars;
                 this.tag = response.data.tag;
-                this.image = response.data.images[0];
+                this.images = response.data.images;
                 this.username = response.data.username;
             }
         } catch (error) {
