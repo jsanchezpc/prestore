@@ -1,7 +1,7 @@
 <template>
     <main class="h-screen min-h-screen text-black lg:flex md:p-4 lg:bg-gradient-to-b from-white from-90% to-black/30">
         <div class="flex-1 md:content-center justify-items-center ">
-            <div class="w-full z-10 hidden lg:block md:absolute top-4">
+            <div class="w-fit z-10 hidden lg:block md:absolute top-4">
                 <div class="float-left return-btn bg-return bg-center bg-contain bg-no-repeat p-3 cursor-pointer"></div>
                 <RouterLink to="/" class="inline-block text-gray-500 text-sm font-medium">
                     <span class="underline">Back to Dashboard</span>
@@ -33,7 +33,7 @@
                     {{ description }}
                 </p>
                 <span
-                    class="sm:ml-10 mt-3 p-0 px-4 bg-red-500 rounded-full text-white text-xs block w-fit h-5 content-center justify-center">{{
+                    class="sm:ml-10 mt-3 p-0 cursor-pointer px-4 bg-red-500 rounded-full text-white text-xs block w-fit h-5 content-center justify-center">#{{
                         tag }}</span>
             </div>
             <div

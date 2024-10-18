@@ -29,8 +29,8 @@ export default {
     name: 'RateStar',
     data() {
         return {
-            rating: 0,          // Rating actual
-            previousRating: 0    // Rating anterior para calcular la diferencia
+            rating: 0,         
+            previousRating: 0    
         }
     },
     props: {
@@ -39,24 +39,24 @@ export default {
             required: true
         },
         initialRating: {
-            type: Number,  // Prop para recibir las estrellas iniciales
+            type: Number, 
             required: true
         }
     },
     methods: {
         setRating(star) {
             const userId = useUserStore().get_account._id;
-            const ratingDiff = star - this.previousRating; // Calcular la diferencia entre el nuevo y el anterior
+            const ratingDiff = star - this.previousRating;
 
             axios.post(`http://localhost:3000/feedback/rate/${this.landingId}`, {
                 rating: star,
                 userId: userId,
-                ratingDiff: ratingDiff // Enviar la diferencia
+                ratingDiff: ratingDiff 
             })
             .then(response => {
                 console.log(response.data);
-                this.previousRating = star; // Actualizar el voto previo
-                this.rating = star;         // Actualizar el rating actual
+                this.previousRating = star; 
+                this.rating = star;
             })
             .catch(error => {
                 console.error('Error updating landing page:', error);

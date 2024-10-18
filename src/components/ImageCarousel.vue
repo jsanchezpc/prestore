@@ -1,12 +1,10 @@
 <template>
-    <div class="relative w-full lg:h-screen overflow-hidden content-start md:content-center md:justify-center">
-        <!-- Primera imagen con sombra inteligente -->
+    <div class="relative w-full lg:h-auto overflow-hidden content-start md:content-center md:justify-center">
         <div class="w-full h-fit sm:h-1/2">
             <img :src="currentImage == undefined ? images[0] : currentImage" alt="Imagen principal"
                 class="w-full h-fit sm:h-full object-scale-down" />
         </div>
 
-        <!-- Otras imágenes en fila debajo -->
         <div class="flex justify-center gap-2 my-2 -order-1">
             <div v-for="(image, index) in images" :key="index"
                 class="w-24 h-24 rounded-md overflow-hidden cursor-pointer shadow-md shadow-black">
