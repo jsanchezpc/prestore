@@ -1,5 +1,5 @@
 <template>
-    <main class="h-screen min-h-screen text-black lg:flex md:p-4 lg:bg-gradient-to-b from-white from-90% to-black/30">
+    <main class="h-auto min-h-screen text-black lg:flex md:p-4 lg:bg-gradient-to-b from-white from-90% to-black/30">
         <div class="flex-1 md:content-center justify-items-center ">
             <div class="w-fit z-10 hidden lg:block md:absolute top-4">
                 <div class="float-left return-btn bg-return bg-center bg-contain bg-no-repeat p-3 cursor-pointer"></div>
@@ -37,10 +37,13 @@
                         tag }}</span>
             </div>
             <div
-                class="interact fixed bottom-0  right-0 w-full p-4 mx-auto bg-gradient-to-t from-white from-30% to-transparent lg:bg-transparent lg:static lg:bottom-auto lg:right-auto lg:w-1/2 lg:p-0 justify-center">
-                <h1 class="lg:block hidden font-bold text-xl text-center text-gray-500/60 mb-4">Did you like it?
-                </h1>
-                <RateStar :landingId="landingId" :initialRating="stars" />
+                class="interact fixed bottom-0 right-0 w-full p-4 mx-auto bg-gradient-to-t from-white from-30% to-transparent lg:bg-transparent lg:static lg:bottom-auto lg:right-auto lg:w-1/2 lg:p-0 justify-center">
+                <div class="subscribe flex justify-center content-center">
+                    <button
+                        class="bg-blue-600 w-full lg:w-fit px-4 py-2 rounded-md shadow-md lg:shadow-none shadow-black text-white text-sm font-medium hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        Get notified
+                    </button>
+                </div>
             </div>
             <!-- <div class="more-items sm:flex sm:flex-wrap">
                 <MoreProducts class="flex-1 justify-center " title="More by travelbags" products="products" />
@@ -54,7 +57,6 @@
 import axios from 'axios'
 import MoreProducts from './../components/MoreProducts.vue'
 import ImageCarousel from './../components/ImageCarousel.vue'
-import RateStar from './../components/RateStar.vue'
 import HeartSvg from './../assets/heart.svg'
 import ShopSvg from './../assets/shop.svg'
 import sadSvg from './../assets/sad.svg'
@@ -64,7 +66,6 @@ export default {
     name: 'ProductLayout',
     components: {
         MoreProducts,
-        RateStar,
         ImageCarousel
     },
     data() {
@@ -79,8 +80,6 @@ export default {
             images: '',
             title: '',
             description: '',
-            goal: 0,
-            stars: 0,
             tag: '',
             frontImage: '',
         }
@@ -99,8 +98,6 @@ export default {
                 this.landingId = response.data._id;
                 this.title = response.data.title;
                 this.description = response.data.description;
-                this.goal = response.data.goal;
-                this.stars = response.data.stars;
                 this.tag = response.data.tag;
                 this.images = response.data.images;
                 this.username = response.data.username;

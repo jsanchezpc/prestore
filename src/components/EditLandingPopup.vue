@@ -54,10 +54,7 @@
                                     class="mt-0 mb-5 block w-full px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black"
                                     type="text" id="url" placeholder="URL of your landing page (10 characters max)"
                                     maxlength="10" onkeypress="return event.charCode != 32">
-                                <label class="text-left w-full block" for="goal">Goal (1 or greater)</label>
-                                <input v-model="goal"
-                                    class="mt-0 mb-5 block w-full px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black"
-                                    type="number" id="goal" placeholder="Likes needed to reach goal" min="1">
+
 
                                 <label class="text-left w-full block" for="id-tag">Tag</label>
                                 <input v-model="tag"
@@ -110,7 +107,6 @@ export default {
             images: [],
             title: '',
             url: '',
-            goal: '',
             tag: '',
             description: ''
         };
@@ -126,7 +122,6 @@ export default {
 
         this.title = this.landing.title;
         this.url = this.landing.url;
-        this.goal = this.landing.goal;
         this.tag = this.landing.tag;
         this.description = this.landing.description;
         this.images = this.landing.images;
@@ -141,7 +136,6 @@ export default {
                 newLandingData: {
                     title: this.title,
                     url: this.url,
-                    goal: this.goal,
                     tag: this.tag,
                     description: this.description,
                     images: this.images
