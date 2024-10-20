@@ -14,7 +14,8 @@ export const useUserStore = defineStore("user", {
   },
   actions: {
     setAccount(account) {
-      this.$patch({ account });
+      // this.$patch({ account });
+      this.account = account;
       localStorage.setItem("userId", account._id);
     },
     setToken(token) {

@@ -35,7 +35,8 @@
                     </button>
                     <!-- HAZ QUE SE DESUSCRIBAAAAAAAAAAAAAAAAAN -->
                     <SubscribePopup v-if="showSubPopup === true" :isSub="isSubscribed" :title="title"
-                        :username="username" @unsubscribe="unsubscribeToLanding" @close="closeSubPopup()" />
+                        :username="username" @unsubscribe="unsubscribeToLanding" @subscribe="subscribeToLanding"
+                        @close="closeSubPopup()" />
                 </div>
             </div>
         </div>
@@ -76,31 +77,54 @@ export default {
             images: [],
             frontImage: '',
             showSubPopup: false,
-            isSubscribed: false
+            isSubscribed: false,
+            userEmail: '',
         }
     },
     async created() {
         try {
-            const { username, url } = this.$route.params;
-            const response = await axios.get(`http://localhost:3000/landing/get?username=${username}&url=${url}`);
+            const userId = localStorage.getItem('userId');
+            const token = localStorage.getItem('userToken');
+            const response = await axios.get("http://localhost:3000/account/sync", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                params: {
+                    userId: userId
+                }
+            });
 
             if (response.status === 200) {
-                const { _id, title, description, tag, images, username, subscribers } = response.data;
-                this.landingId = _id;
-                this.title = title;
-                this.description = description;
-                this.tag = tag;
-                this.images = images;
-                this.username = username;
+                this.userEmail = response.data.user.user.email;
+                await useUserStore().setAccount(response.data.user.user);
+                try {
+                    const { username, url } = this.$route.params;
+                    const response = await axios.get(`http://localhost:3000/landing/get?username=${username}&url=${url}`);
 
-                const user = useUserStore().get_account;
-                if (user) {
-                    this.isSubscribed = await subscribers.some(subscriber => subscriber === user.email);
+                    if (response.status === 200) {
+                        const { _id, title, description, tag, images, username, subscribers } = response.data;
+                        this.landingId = _id;
+                        this.title = title;
+                        this.description = description;
+                        this.tag = tag;
+                        this.images = images;
+                        this.username = username;
+                        this.subscribers = subscribers;
+                        console.log('Subscribers', this.subscribers);
+                        const user = await useUserStore().get_account;
+                        console.log(user)
+                        if (user) {
+                            this.isSubscribed = await subscribers.some(subscriber => subscriber === user.email);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error getting landing page:', error);
                 }
-                console.log('You are already suscribed here.', this.isSubscribed);
             }
         } catch (error) {
-            console.error('Error getting landing page:', error);
+            console.error("Error sincronizando el token: ", error);
+            localStorage.removeItem("userToken");
+            localStorage.removeItem("userId");
         }
     },
     methods: {
